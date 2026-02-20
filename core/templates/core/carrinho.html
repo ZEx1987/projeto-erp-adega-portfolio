@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Carrinho — StockPoddis</title>
+</head>
+
+<body>
+    <h1>🛒 Seu carrinho</h1>
+    {% if request.GET.login_required %}
+    <!-- Overlay (trava a tela) -->
+    <div class="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+        <!-- Caixa do modal -->
+        <div class="bg-white rounded-lg shadow-lg max-w-md w-full p-6">
+            <h2 class="text-xl font-bold mb-2">🔐 Login necessário</h2>
+
+            <p class="text-gray-700 mb-6">
+                Para finalizar a compra, você precisa estar autenticado.
+            </p>
+
+            <div class="flex justify-end gap-3">
+                <!-- Fechar -->
+                <a href="{% url 'ver_carrinho' %}" class="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300">
+                    Fechar
+                </a>
+
+                <!-- Login: volta para o checkout depois -->
+                <a href="{% url 'login' %}?next={% url 'checkout' %}"
+                    class="px-4 py-2 rounded bg-green-600 text-white hover:bg-green-700">
+                    Login
+                </a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <p>Seu carrinho está vazio.</p>
+    {% endif %}
+
+    <p>
+        <a href="{% url 'catalogo' %}">← Voltar para o catálogo</a>
+        <a href="{% url 'lista_categorias' %}">📦 Voltar para categorias</a>
+        <a href="{% url 'continuar_comprando' %}">🛍️ Continuar comprando</a>
+    </p>
+
+    {% if itens %}
+    <table border="1" cellpadding="8">
+        <thead>
+            <tr>
+                <th>Produto</th>
+                <th>Qtd</th>
+                <th>Preço</th>
+                <th>Subtotal</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in itens %}
+            <tr>
+                <td>{{ item.produto.nome }}</td>
+
+                <!-- Quantidade: input digitável + validação via POST -->
+                <td>
+                    <form method="post" action="{% url 'atualizar_quantidade' item.produto.id %}">
+                        {% csrf_token %}
+
+                        <!-- Campo numérico com limite de estoque -->
+                        <input type="number" name="quantidade" value="{{ item.quantidade }}" min="0"
+                            max="{{ item.produto.estoque_atual }}" style="width:70px;" />
+
+                        <!-- Botão para aplicar a quantidade digitada -->
+                        <button type="submit">OK</button>
+                    </form>
+
+                    <!-- Informação de estoque para o cliente -->
+                    <small>Estoque: {{ item.produto.estoque_atual }}</small>
+                </td>
+
+                <td>R$ {{ item.produto.preco }}</td>
+                <td>R$ {{ item.subtotal }}</td>
+
+                <!-- Ações: +1, -1 e deletar item inteiro -->
+                <td>
+                    <a href="{% url 'adicionar_ao_carrinho' item.produto.id %}">+1</a>
+                    |
+                    <a href="{% url 'remover_do_carrinho' item.produto.id %}">-1</a>
+                    |
+                    <a href="{% url 'deletar_do_carrinho' item.produto.id %}">🗑️ Deletar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Total: R$ {{ total }}</h3>
+
+        <p>
+            <a href="{% url 'limpar_carrinho' %}">Limpar carrinho</a>
+        </p>
+
+            <!-- Botão Finalizar compra com verificação de login -->
+        {% if user.is_authenticated %}
+            <a href="{% url 'checkout' %}"
+                class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                Finalizar compra
+            </a>
+        {% else %}
+            <a href="{% url 'ver_carrinho' %}?login_required=1"
+                class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                Finalizar compra
+            </a>
+        {% endif %}
+
+        {% else %}
+            <p>Seu carrinho está vazio.</p>
+        {% endif %}
+    </body>
+
+</html>

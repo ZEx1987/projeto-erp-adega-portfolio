@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{{ categoria.nome }} — StockPoddis</title>
+</head>
+
+<body>
+    <h1>🍻 {{ categoria.nome }}</h1>
+
+    <p>
+        <a href="{% url 'lista_categorias' %}">← Voltar para categorias</a> |
+        <a href="{% url 'ver_carrinho' %}">Ver carrinho</a>
+    </p>
+
+    {% if produtos %}
+    <ul>
+        {% for p in produtos %}
+        <li>
+            <strong>{{ p.nome }}</strong><br />
+            Preço: R$ {{ p.preco }}<br />
+            Estoque: {{ p.estoque_atual }}<br />
+
+            <a href="{% url 'adicionar_ao_carrinho' p.id %}">Adicionar ao carrinho</a>
+            |
+            <a href="{% url 'detalhes_produto' p.id %}">Ver detalhes</a>
+        </li>
+        <hr />
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>Nenhum produto ativo nessa categoria.</p>
+    {% endif %}
+</body>
+
+</html>

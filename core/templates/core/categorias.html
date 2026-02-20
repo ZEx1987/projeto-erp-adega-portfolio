@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Categorias — StockPoddis</title>
+</head>
+
+<body>
+    <h1>📦 Categorias</h1>
+
+    <p>
+        <a href="{% url 'catalogo' %}">Ver todos os produtos</a> |
+        <a href="{% url 'ver_carrinho' %}">Ver carrinho</a>
+    </p>
+
+    {% if categorias %}
+    <ul>
+        {% for c in categorias %}
+        <li>
+            <a href="{% url 'produtos_por_categoria' c.id %}">{{ c.nome }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>Nenhuma categoria cadastrada.</p>
+    {% endif %}
+</body>
+
+</html>

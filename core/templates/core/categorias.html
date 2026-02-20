@@ -1,31 +1,52 @@
-<!doctype html>
-<html lang="pt-br">
+{% extends "core/base.html" %}
+{% block title %}Categorias — StockPoddis{% endblock %}
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Categorias — StockPoddis</title>
-</head>
+{% block content %}
+<div class="flex items-center justify-between mb-6">
+    <div>
+        <h1 class="text-3xl font-bold">🧃 Categorias</h1>
+        <p class="text-gray-500 mt-1">Toque em uma categoria para ver os produtos disponíveis.</p>
+    </div>
 
-<body>
-    <h1>📦 Categorias</h1>
+    <div class="flex gap-2">
+        <a href="{% url 'catalogo' %}" class="px-4 py-2 rounded bg-white shadow hover:bg-gray-50">
+            Ver todos os produtos
+        </a>
 
-    <p>
-        <a href="{% url 'catalogo' %}">Ver todos os produtos</a> |
-        <a href="{% url 'ver_carrinho' %}">Ver carrinho</a>
-    </p>
+        <a href="{% url 'ver_carrinho' %}"
+            class="px-4 py-2 rounded bg-yellow-500 text-white shadow hover:bg-yellow-600">
+            Ver carrinho
+        </a>
+    </div>
+</div>
 
-    {% if categorias %}
-    <ul>
-        {% for c in categorias %}
-        <li>
-            <a href="{% url 'produtos_por_categoria' c.id %}">{{ c.nome }}</a>
-        </li>
-        {% endfor %}
-    </ul>
-    {% else %}
-    <p>Nenhuma categoria cadastrada.</p>
-    {% endif %}
-</body>
+<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+    {% for c in categorias %}
+    <a href="{% url 'produtos_por_categoria' c.id %}" class="bg-white rounded-2xl shadow-md p-6
+          hover:shadow-xl hover:-translate-y-1
+          transition duration-300
+          flex flex-col items-center text-center">
 
-</html>
+        {% if c.imagem %}
+        <img src="{{ c.imagem.url }}" alt="{{ c.nome }}" class="w-20 h-20 rounded-2xl object-cover mb-4" />
+        {% else %}
+        <div class="w-20 h-20 rounded-2xl bg-gray-900 text-white flex items-center justify-center text-3xl mb-4">
+            🧊
+        </div>
+        {% endif %}
+
+        <div class="font-semibold text-gray-800 text-lg">
+            {{ c.nome }}
+        </div>
+
+        <div class="text-sm text-gray-400 mt-1">
+            Abrir
+        </div>
+    </a>
+    {% empty %}
+    <div class="bg-white rounded-xl shadow p-6 col-span-full">
+        <p class="text-gray-600">Nenhuma categoria cadastrada ainda.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

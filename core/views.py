@@ -43,7 +43,7 @@ def logout_view(request):
     Faz logout e volta para o catálogo.
     """
     logout(request)
-    return redirect("catalogo")
+    return redirect("home")
 
 def _get_cart(request):
     """

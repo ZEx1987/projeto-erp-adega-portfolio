@@ -5,6 +5,12 @@ urlpatterns = [
     #tela de login/logout
     path("login/", views.login_view, name="login"),
     path("logout/", views.logout_view, name="logout"),
+    
+    # Home agora é a lista de categorias
+    path("", views.lista_categorias, name="home"),
+
+    # Catálogo geral (todos os produtos) fica separado
+    path("catalogo/", views.catalogo, name="catalogo"),
 
     # Loja
     path("", views.catalogo, name="catalogo"),

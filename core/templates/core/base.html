@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}StockPoddis{% endblock %}</title>
+
+    <!-- Tailwind (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-800">
+    <!-- Navbar -->
+    <header class="bg-gray-900 text-white shadow">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+            <a href="{% url 'home' %}" class="font-bold text-xl hover:text-yellow-400">
+                🍻 StockPoddis
+            </a>
+
+            <nav class="flex items-center gap-4 text-sm">
+                <a href="{% url 'lista_categorias' %}" class="hover:text-yellow-400">Categorias</a>
+                <a href="{% url 'ver_carrinho' %}" class="hover:text-yellow-400">Carrinho</a>
+
+                {% if user.is_authenticated %}
+                <span class="text-gray-300">Olá, {{ user.username }}</span>
+                <a href="{% url 'logout' %}" class="bg-red-500 px-3 py-1 rounded hover:bg-red-600">
+                    Sair
+                </a>
+                {% else %}
+                <a href="{% url 'login' %}" class="bg-green-600 px-3 py-1 rounded hover:bg-green-700">
+                    Entrar
+                </a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <!-- Conteúdo -->
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="mt-12 py-6 text-center text-sm text-gray-500">
+        © {{ now|date:"Y" }} StockPoddis — Projeto ERP Portfolio
+    </footer>
+</body>
+
+</html>

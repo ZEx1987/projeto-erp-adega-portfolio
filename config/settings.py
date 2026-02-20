@@ -125,3 +125,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+# Pasta base do projeto (normalmente já existe como BASE_DIR)
+# BASE_DIR = Path(__file__).resolve().parent.parent  # (se já tiver, não repita)
+
+# URL pública para acessar arquivos enviados (upload)
+MEDIA_URL = "/media/"
+
+# Caminho físico onde as imagens serão salvas
+MEDIA_ROOT = BASE_DIR / "media"

@@ -1,39 +1,44 @@
-<!doctype html>
-<html lang="pt-br">
+{% extends "core/base.html" %}
+{% block title %}Catálogo — StockPoddis{% endblock %}
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>StockPoddis — Loja de Bebidas</title>
-</head>
+{% block content %}
+<div class="flex items-center justify-between mb-6">
+    <h1 class="text-3xl font-bold">🍻 Catálogo</h1>
+    <div class="flex gap-2">
+        <a href="{% url 'lista_categorias' %}" class="px-4 py-2 rounded bg-white shadow hover:bg-gray-50">
+            Ver por categorias
+        </a>
+        <a href="{% url 'ver_carrinho' %}"
+            class="px-4 py-2 rounded bg-yellow-500 text-white shadow hover:bg-yellow-600">
+            Ver carrinho
+        </a>
+    </div>
+</div>
 
-<body>
-    <h1>🍻 StockPoddis — Loja de Bebidas</h1>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for p in produtos %}
+    <div class="bg-white rounded-xl shadow p-5 flex flex-col justify-between">
+        <div>
+            <p class="text-sm text-gray-500">{{ p.categoria.nome }}</p>
+            <h2 class="text-lg font-semibold mt-1">{{ p.nome }}</h2>
 
-    <p>
-        <a href="{% url 'lista_categorias' %}">📦 Ver por categorias</a> |
-        <a href="{% url 'ver_carrinho' %}">🛒 Ver carrinho</a>
-    </p>
+            <p class="text-2xl font-bold text-green-600 mt-3">R$ {{ p.preco }}</p>
+            <p class="text-sm text-gray-500 mt-1">Estoque: {{ p.estoque_atual }}</p>
+        </div>
 
-    {% if produtos %}
-    <ul>
-        {% for p in produtos %}
-        <li>
-            <strong>{{ p.nome }}</strong><br />
-            Categoria: {{ p.categoria.nome }}<br />
-            Preço: R$ {{ p.preco }}<br />
-            Estoque: {{ p.estoque_atual }}<br />
+        <div class="mt-5 flex items-center justify-between">
+            <a href="{% url 'detalhes_produto' p.id %}" class="text-blue-600 hover:underline">
+                Ver detalhes
+            </a>
 
-            <!-- Link para detalhes -->
-            <a href="{% url 'detalhes_produto' p.id %}">Ver detalhes</a>
-            <a href="{% url 'adicionar_ao_carrinho' p.id %}">Adicionar ao carrinho</a>
-        </li>
-        <hr />
-        {% endfor %}
-    </ul>
-    {% else %}
-    <p>Nenhum produto disponível no momento.</p>
-    {% endif %}
-</body>
-
-</html>
+            <a href="{% url 'adicionar_ao_carrinho' p.id %}"
+                class="px-3 py-2 rounded bg-gray-900 text-white hover:bg-gray-800">
+                + Carrinho
+            </a>
+        </div>
+    </div>
+    {% empty %}
+    <p class="text-gray-600">Nenhum produto disponível.</p>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -19,11 +19,17 @@ class Cliente(models.Model):
 
 class Categoria(models.Model):
     # Nome da categoria (ex: Cervejas, Vinhos, Destilados)
-    nome = models.CharField(max_length=80, unique=True)
+    nome = models.CharField(max_length=100, unique=True)
 
     # Data de criação automática
     criado_em = models.DateTimeField(auto_now_add=True)
 
+        # Imagem da categoria (upload no admin)
+    imagem = models.ImageField(
+        upload_to="categorias/",   # Pasta dentro de /media/
+        blank=True,                # Permite categoria sem imagem
+        null=True                  # Permite salvar no banco como vazio
+    )
     def __str__(self):
         # Exibição da categoria no admin
         return self.nome    

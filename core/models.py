@@ -61,6 +61,12 @@ class Produto(models.Model):
     # Data de criação automática
     criado_em = models.DateTimeField(auto_now_add=True)
 
+    # ✅ Imagem do produto 
+    imagem = models . ImageField (upload_to = "produtos/", blank = True, null = True)   
+    # salva em media/produtos/ blank = True , null = True     ) 
+    # Dados de criação 
+    criado_em = models . DateTimeField( auto_now_add = True ) 
+
     def __str__(self):
         # Exibição do produto no admin
         return self.nome
@@ -133,3 +139,5 @@ class ItemPedido(models.Model):
     def __str__(self):
         # Exibição no admin
         return f"{self.quantidade}x {self.produto.nome}"    
+
+

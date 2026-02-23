@@ -23,7 +23,7 @@ class CategoriaAdmin(admin.ModelAdmin):
 @admin.register(Produto)
 class ProdutoAdmin(admin.ModelAdmin):
     # Colunas mostradas na listagem
-    list_display = ("nome", "categoria", "custo", "preco", "estoque_atual", "ativo", "criado_em")
+    list_display = ("nome", "categoria", "custo", "preco", "estoque_atual", "ativo", "criado_em", "imagem")
 
     # Filtros laterais
     list_filter = ("categoria", "ativo")
